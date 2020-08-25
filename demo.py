@@ -7,41 +7,22 @@
 # @File     : demo.py
 # @Software : PyCharm
 
-from flask import Flask, request, abort, g
-
-# from passport import bp
-
-#
-# app1 = Flask(__name__)
-# app2 = Flask(__name__)
-# # app.confit["itcast"] = 'python'
-# app1.redis_cli = 'redis client 1'
-# app2.redis_cli = 'redis client 2'
-#
-# # app.register_blueprint(bp)
-#
-#
-# @app1.route('/app1')
-# def get_articles():
-#
-#     return ''
+from flask import Flask
+from flask_restful import Resource, Api
 
 app = Flask(__name__)
+api = Api(app)
 
 
-def db_query():
-    user_id = g.user_id
-    user_name = g.user_name
-    print('user_id={} user_name={}'.format(user_id, user_name))
+class HelloWorldResource(Resource):
+    def get(self):
+        return {"hello": "world"}
+
+    def post(self):
+        return {'msg': 'post hello world'}
 
 
-@app.route('/')
-def get_user_profile():
-    g.user_id = 123
-    g.user_name = 'itcast'
-    db_query()
-    return 'hello world'
-
+api.add_resource(HelloWorldResource, '/')
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
